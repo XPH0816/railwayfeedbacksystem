@@ -5,8 +5,11 @@ Hello {{ $feedback->user->name }},
 
 {{ $feedback->admin->name }} has replied to your feedback.
 
-Feedback: {{ $feedback->content }}
-Reply: {{ $feedback->reply }}
+Feedback: <br>
+``{{ $feedback->content }}``
+
+Reply: <br>
+``{{ $reply->content }}``
 
 {{-- <x-mail::button :url="{{ route() }}"> --}}
 {{-- View Reply --}}

@@ -34,7 +34,11 @@ watch(() => form.railway_id, () => {
 const submit = () => {
     form.post(route('feedback.store'), {
         preserveScroll: true,
-        onSuccess: () => form.reset(),
+        onSuccess: () => {
+            form.reset()
+            props.user ? form.username = props.user.name : "";
+            props.user ? form.email = props.user.email : "";
+        },
         onError: () => console.log(form.errors),
     });
 };
