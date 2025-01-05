@@ -7,7 +7,8 @@ A new user has been created with the following details: <br>
 
 Name: {{ $user->name }} <br>
 Email: {{ $user->email }} <br>
-Password: `{{ $password }}` (Please change your password after login)
+Password: "{{ $password }}" <br>
+(Please change your password after login)
 
 Please click the button below to login:
 <x-mail::button :url="route('login')">
