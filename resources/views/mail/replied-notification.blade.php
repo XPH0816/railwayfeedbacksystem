@@ -9,7 +9,7 @@ Feedback: <br>
 ``{{ $feedback->content }}``
 
 Reply: <br>
-``{{ $reply->content }}``
+``{{ $feedback->reply }}``
 
 {{-- <x-mail::button :url="{{ route() }}"> --}}
 {{-- View Reply --}}
