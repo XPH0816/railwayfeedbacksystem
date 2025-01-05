@@ -30,18 +30,44 @@ const close = () => {
         :closeable="closeable"
         @close="close"
     >
-        <div class="px-6 py-4">
-            <div class="text-lg font-medium text-gray-900">
+        <div class="modal-content">
+            <div class="modal-title">
                 <slot name="title" />
             </div>
 
-            <div class="mt-4 text-sm text-gray-600">
+            <div class="modal-body">
                 <slot name="content" />
             </div>
         </div>
 
-        <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 text-end">
+        <div class="modal-footer">
             <slot name="footer" />
         </div>
     </Modal>
 </template>
+
+<style scoped>
+.modal-content {
+    padding: 1.5rem;
+}
+
+.modal-title {
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #1f2937; /* text-gray-900 */
+}
+
+.modal-body {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #4b5563; /* text-gray-600 */
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-evenly;
+    padding: 1.5rem;
+    background-color: #f3f4f6; /* bg-gray-100 */
+    text-align: end;
+}
+</style>

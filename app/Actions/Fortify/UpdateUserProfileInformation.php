@@ -17,23 +17,35 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      */
     public function update(User $user, array $input): void
     {
-        Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
-        ])->validateWithBag('updateProfileInformation');
+        Validator::make(
+            $input,
+            [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+                'phone' => ['nullable', 'string', 'regex:/^0\d{2}-\d{7}$|^0\d{2}-\d{8}$/', 'max:255'],
+                'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+                'status' => ['nullable', 'string', 'max:255'],
+            ],
+            [
+                'phone.regex' => 'The phone number must be in the format 01x-xxxxxxx or 01x-xxxxxxx.',
+            ]
+        )->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
             $user->updateProfilePhoto($input['photo']);
         }
 
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
+        if (
+            $input['email'] !== $user->email &&
+            $user instanceof MustVerifyEmail
+        ) {
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([
                 'name' => $input['name'],
                 'email' => $input['email'],
+                'phone' => $input['phone'],
+                'status' => $input['status'] ?? $user->status,
             ])->save();
         }
     }

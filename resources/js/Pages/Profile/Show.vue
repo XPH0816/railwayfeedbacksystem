@@ -1,11 +1,12 @@
 <script setup>
-import AppLayout from '@/Layouts/AppLayout.vue';
 import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm.vue';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue';
-import SectionBorder from '@/Components/SectionBorder.vue';
 import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue';
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm.vue';
+import HomeLayout from '@/Layouts/HomeLayout.vue';
+import SectionCard from '@/Components/Home/SectionCard.vue';
+import AdminLayout from '@/Layouts/AdminLayout.vue';
 
 defineProps({
     confirmsTwoFactorAuthentication: Boolean,
@@ -14,44 +15,52 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Profile">
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Profile
-            </h2>
-        </template>
+    <AdminLayout title="Profile" v-if="$page.props.auth.user.role === 'admin'">
+        <h2>
+            Profile
+        </h2>
+        <SectionCard v-if="$page.props.jetstream.canUpdateProfileInformation">
+            <UpdateProfileInformationForm :user="$page.props.auth.user" />
+        </SectionCard>
 
-        <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div v-if="$page.props.jetstream.canUpdateProfileInformation">
-                    <UpdateProfileInformationForm :user="$page.props.auth.user" />
+        <SectionCard v-if="$page.props.jetstream.canUpdatePassword">
+            <UpdatePasswordForm />
+        </SectionCard>
 
-                    <SectionBorder />
-                </div>
+        <SectionCard v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
+            <TwoFactorAuthenticationForm :requires-confirmation="confirmsTwoFactorAuthentication" />
+        </SectionCard>
 
-                <div v-if="$page.props.jetstream.canUpdatePassword">
-                    <UpdatePasswordForm class="mt-10 sm:mt-0" />
+        <SectionCard>
+            <LogoutOtherBrowserSessionsForm :sessions="sessions" />
+        </SectionCard>
 
-                    <SectionBorder />
-                </div>
+        <SectionCard v-if="$page.props.jetstream.hasAccountDeletionFeatures">
+            <DeleteUserForm />
+        </SectionCard>
+    </AdminLayout>
+    <HomeLayout title="Profile" v-else>
+        <h2>
+            Profile
+        </h2>
+        <SectionCard v-if="$page.props.jetstream.canUpdateProfileInformation">
+            <UpdateProfileInformationForm :user="$page.props.auth.user" />
+        </SectionCard>
 
-                <div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
-                    <TwoFactorAuthenticationForm
-                        :requires-confirmation="confirmsTwoFactorAuthentication"
-                        class="mt-10 sm:mt-0"
-                    />
+        <SectionCard v-if="$page.props.jetstream.canUpdatePassword">
+            <UpdatePasswordForm />
+        </SectionCard>
 
-                    <SectionBorder />
-                </div>
+        <SectionCard v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
+            <TwoFactorAuthenticationForm :requires-confirmation="confirmsTwoFactorAuthentication" />
+        </SectionCard>
 
-                <LogoutOtherBrowserSessionsForm :sessions="sessions" class="mt-10 sm:mt-0" />
+        <SectionCard>
+            <LogoutOtherBrowserSessionsForm :sessions="sessions" />
+        </SectionCard>
 
-                <template v-if="$page.props.jetstream.hasAccountDeletionFeatures">
-                    <SectionBorder />
-
-                    <DeleteUserForm class="mt-10 sm:mt-0" />
-                </template>
-            </div>
-        </div>
-    </AppLayout>
+        <SectionCard v-if="$page.props.jetstream.hasAccountDeletionFeatures">
+            <DeleteUserForm />
+        </SectionCard>
+    </HomeLayout>
 </template>

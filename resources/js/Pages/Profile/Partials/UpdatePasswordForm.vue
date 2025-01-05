@@ -4,9 +4,8 @@ import { useForm } from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import FormSection from '@/Components/FormSection.vue';
 import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
+import Input from '@/Components/Admin/Input.vue';
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -48,53 +47,51 @@ const updatePassword = () => {
         </template>
 
         <template #form>
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="current_password" value="Current Password" />
-                <TextInput
-                    id="current_password"
-                    ref="currentPasswordInput"
-                    v-model="form.current_password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="current-password"
-                />
-                <InputError :message="form.errors.current_password" class="mt-2" />
-            </div>
+            <div style="display: flex; gap: 10px; justify-content: space-around;" class="input-group">
+                <div>
+                    <Input id="current_password" ref="currentPasswordInput" label="Current Password"  v-model="form.current_password"
+                        type="password" style="justify-content: space-evenly; gap: 1rem;" width="15vw" autocomplete="current-password" />
+                    <InputError :message="form.errors.current_password" class="mt-2" />
+                </div>
 
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password" value="New Password" />
-                <TextInput
-                    id="password"
-                    ref="passwordInput"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
-                />
-                <InputError :message="form.errors.password" class="mt-2" />
-            </div>
+                <div>
+                    <Input id="password" ref="passwordInput" v-model="form.password" label="New Password" type="password" width="15vw"
+                        style="justify-content: center; gap: 1rem;" autocomplete="new-password" />
+                    <InputError :message="form.errors.password" class="mt-2" />
+                </div>
 
-            <div class="col-span-6 sm:col-span-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-                <TextInput
-                    id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    autocomplete="new-password"
-                />
-                <InputError :message="form.errors.password_confirmation" class="mt-2" />
+                <div>
+                    <Input id="password_confirmation" label="Confirm Password" style="justify-content: center; gap: 1rem;" width="15vw" v-model="form.password_confirmation" type="password"
+                        class="mt-1 block w-full" autocomplete="new-password" />
+                    <InputError :message="form.errors.password_confirmation" class="mt-2" />
+                </div>
             </div>
         </template>
 
         <template #actions>
-            <ActionMessage :on="form.recentlySuccessful" class="me-3">
+            <ActionMessage :on="form.recentlySuccessful" class="mt-2 me-3">
                 Saved.
             </ActionMessage>
 
-            <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <PrimaryButton :style="{ opacity: form.processing ? 0.25 : 1 }" :disabled="form.processing">
                 Save
             </PrimaryButton>
         </template>
     </FormSection>
 </template>
+
+<style scoped>
+.mt-1 {
+    margin-top: 0.25rem;
+}
+.mt-2 {
+    margin-top: 0.5rem;
+}
+@media screen and (max-width: 768px) {
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
+</style>

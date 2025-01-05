@@ -8,7 +8,12 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.cdnfonts.com/css/gill-sans-2" rel="stylesheet" />
+        <link href="https://fonts.cdnfonts.com/css/gill-sans-mt-2" rel="stylesheet" />
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Comic+Neue:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Geo:ital@0;1&family=Puritan:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+          rel="stylesheet" />
 
         <!-- Scripts -->
         @routes

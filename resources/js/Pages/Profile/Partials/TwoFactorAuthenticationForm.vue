@@ -251,3 +251,9 @@ const disableTwoFactorAuthentication = () => {
         </template>
     </ActionSection>
 </template>
+
+<style scoped>
+.mt-5 {
+    margin-top: 1.25rem;
+}
+</style>
