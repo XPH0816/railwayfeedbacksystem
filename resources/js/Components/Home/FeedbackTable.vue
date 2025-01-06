@@ -1,29 +1,16 @@
 <script setup>
-import { Railway } from '@/types/Railway'
-import { router } from '@inertiajs/vue3'
+import { Feedback } from '@/types/Feedback'
 
 const emit = defineEmits({
-    openEditRailwayPopup: (value) => value instanceof Railway,
+    openShowFeedbackPopup: (value) => value instanceof Feedback,
 })
-function editRailway({ id, name, status }) {
-    const railway = new Railway({ id, name, status })
-    emit('openEditRailwayPopup', railway)
-}
-
-function deleteRailway(railway) {
-    router.post(route('railways.delete', { railway: railway.id }), {
-        _method: 'DELETE',
-    }, {
-        errorBag: 'deleteRailway',
-        preserveScroll: true,
-        onSuccess: () => {
-            console.log('Railway deleted:', railway)
-        },
-    })
+function showFeedback({ id, content }) {
+    const feedback = new Feedback({ id, content })
+    emit('openShowFeedbackPopup', feedback)
 }
 
 defineProps({
-    railways: {
+    feedbacks: {
         type: Array,
         default: () => [],
     },
@@ -36,33 +23,36 @@ defineProps({
             <thead>
                 <tr>
                     <td>Name</td>
-                    <td>Status</td>
-                    <td>Action</td>
+                    <td>Rating</td>
+                    <td>Content</td>
+                    <td>Reply</td>
+                    <td>Reply at</td>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="railway in railways" :key="railway.name" v-if="railways.length > 0">
+                <tr v-for="feedback in feedbacks" :key="feedback.name" v-if="feedbacks.length > 0">
                     <td>
                         <div class="People">
                             <div class="people-de">
-                                <h5>{{ railway.name }}</h5>
+                                <h5>{{ feedback.railway.name }}</h5>
                             </div>
                         </div>
                     </td>
-                    <td :class="railway.status.toLowerCase()">
-                        <p>{{ railway.status }}</p>
+                    <td>
+                        <p>{{ feedback.rating }}</p>
                     </td>
                     <td>
-                        <div class="button-group">
-                            <button class="edit-btn" @click="editRailway(railway)">
-                                <i class="bx bx-edit"></i>
-                                Edit
-                            </button>
-                            <button class="edit-btn" @click="deleteRailway(railway)">
-                                <i class="bx bx-trash"></i>
-                                Delete
-                            </button>
-                        </div>
+                        <p>{{ feedback.content }}</p>
+                    </td>
+                    <td :class="feedback.reply">
+                        <p>{{ feedback.reply ?? 'Haven\'t not replied yet' }}</p>
+                    </td>
+                    <td>
+                        <p v-if="feedback.created_at != feedback.updated_at">{{ new Date(feedback.updated_at).toLocaleString('en-MY', {
+                            day: 'numeric', month: 'long', year:
+                                "numeric", hour: "numeric", minute: "numeric"
+                        }) }}</p>
+                        <p v-else>Haven't not replied yet</p>
                     </td>
                 </tr>
             </tbody>
@@ -77,6 +67,7 @@ defineProps({
     background: white;
     border-radius: 8px;
     text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .board img {
@@ -159,6 +150,15 @@ tbody tr td {
 
 .maintenance p {
     background: #fff3cd;
+    padding: 2px 10px;
+    display: inline-block;
+    border-radius: 40px;
+    color: #2b2b2b;
+    text-transform: capitalize;
+}
+
+.replied p {
+    background: #d6e9f9;
     padding: 2px 10px;
     display: inline-block;
     border-radius: 40px;

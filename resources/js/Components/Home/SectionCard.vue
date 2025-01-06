@@ -1,8 +1,18 @@
 <script setup>
+defineProps({
+    height: {
+        type: String,
+        default: 'auto',
+    },
+    width: {
+        type: String,
+        default: 'auto',
+    },
+});
 </script>
 
 <template>
-    <section class="card">
+    <section class="card" :style="{ height, width }">
         <slot>
             Test Card
         </slot>

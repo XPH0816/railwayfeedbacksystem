@@ -20,6 +20,14 @@ Route::get('/faq', function () {
 Route::get('/feedback', [FeedbackController::class, 'create'])->name('feedback');
 Route::post('/feedback', [FeedbackController::class, 'submit'])->name('feedback.store');
 
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+])->group(function () {
+    Route::get('/history', [FeedbackController::class, 'show'])->name('history');
+});
+
+
 Route::post('/register', [RegisteredUserController::class, 'store'])
     ->middleware(config('fortify.middleware', ['web']))
     ->middleware(['guest:' . config('fortify.guard')])

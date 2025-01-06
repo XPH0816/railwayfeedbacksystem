@@ -1,44 +1,33 @@
-<script setup lang="ts">
-import { User } from '@/types/User'
-const users = defineModel('users', {
-    type: Array as () => User[],
-    default: [],
-})
-
-defineEmits(['openAddUserPopup'])
+<script setup>
+defineProps({
+    bestRailway: {
+        type: Object,
+        default: () => {},
+    },
+    worstRailway: {
+        type: Object,
+        default: () => {},
+    },
+});
 </script>
 
 <template>
     <div class="interface">
         <div class="values">
             <div class="val-box">
-                <i class="bx bx-user"></i>
+                <i class="bx bx-train"></i>
                 <div>
-                    <h3>{{ users.length }}</h3>
-                    <span>Total Users</span>
+                    <h3>{{ bestRailway.name }}</h3>
+                    <span>Best Railway</span>
                 </div>
             </div>
             <div class="val-box">
-                <i class="bx bx-user-check"></i>
+                <i class="bx bxs-train"></i>
                 <div>
-                    <h3>{{ users.filter(user => user.status === 'active').length }}</h3>
-                    <span>Active Users</span>
+                    <h3>{{ worstRailway.name }}</h3>
+                    <span>Worst Railway</span>
                 </div>
             </div>
-            <div class="val-box">
-                <i class="bx bx-user"></i>
-                <div>
-                    <h3>{{ users.filter(user => user.status === 'inactive').length }}</h3>
-                    <span>Inactive Users</span>
-                </div>
-            </div>
-            <!-- Add New User Button -->
-            <button class="val-box" @click="$emit('openAddUserPopup')" style="margin: 0%;">
-                <i class="bx bx-user-plus"></i>
-                <div>
-                    <h3>Add New User</h3>
-                </div>
-            </button>
         </div>
     </div>
 </template>
@@ -55,14 +44,13 @@ defineEmits(['openAddUserPopup'])
 
 .values .val-box {
     background: white;
-    width: 235px;
+    width: 280px;
     padding: 16px 20px;
     border-radius: 5px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: space-evenly;
     align-items: center;
 }
-
 
 .values .val-box i {
     font-size: 25px;

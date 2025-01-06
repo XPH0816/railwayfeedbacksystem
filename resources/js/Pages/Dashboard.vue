@@ -1,44 +1,118 @@
 <script setup>
+import RatingStats from '@/Components/Admin/RatingStats.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
-import { ref } from 'vue';
-import UserStats from '@/Components/Admin/UserStats.vue';
-import UserTable from '@/Components/Admin/UserTable.vue';
-import EditUserModal from '@/Components/Admin/Modals/EditUserModal.vue';
-import AddUserModal from '@/Components/Admin/Modals/AddUserModal.vue';
 
-const addUser = ref(false);
-const editUser = ref(false);
-const selectedUser = ref({});
+import { Bar } from 'vue-chartjs';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import SectionCard from '@/Components/Home/SectionCard.vue';
 
-function openEditUserModal(user) {
-    selectedUser.value = user;
-    editUser.value = true;
-}
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.defaults.font.family = 'cursive';
 
-const props = defineProps({ users: Array })
+const props = defineProps({
+    bestRailway: {
+        type: Object,
+        default: () => { },
+    },
+    worstRailway: {
+        type: Object,
+        default: () => { },
+    },
+    railways: {
+        type: Array,
+        default: () => [],
+    },
+});
+
+const datacollection = {
+    labels: props.railways.map((railway) => railway.name),
+    datasets: [
+        {
+            label: 'Rating',
+            backgroundColor: '#f87979',
+            data: props.railways.map((railway) => railway.rating ?? 0),
+        },
+    ],
+};
+
+const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+        x: {
+            title: {
+                display: true,
+                text: 'Railway',
+                font: {
+                    size: 14,
+                },
+            },
+        },
+        y: {
+            title: {
+                display: true,
+                text: 'Rating',
+                font: {
+                    size: 14,
+                },
+            },
+            min: 0,
+            max: 5,
+            ticks: {
+                stepSize: 1,
+            },
+        },
+    },
+    plugins: {
+        legend: {
+            labels: {
+                display: false,
+            },
+        },
+        title: {
+            display: true,
+            text: 'Railway Ratings',
+            font: {
+                size: 20,
+            },
+        },
+    },
+};
 </script>
 
 <template>
     <AdminLayout title="Dashboard">
-        <h3 class="title">User Management</h3>
-        <UserStats @openAddUserPopup="addUser = true" :users="users" />
-        <UserTable @openEditUserPopup="openEditUserModal" :users="users" />
-        <EditUserModal v-if="editUser" v-model:visible="editUser" v-bind:user="selectedUser" />
-        <AddUserModal v-if="addUser" v-model:visible="addUser" />
+        <h3 class="title">Dashboard</h3>
+        <RatingStats :bestRailway="bestRailway" :worstRailway="worstRailway" />
+        <div class="chart">
+            <SectionCard height="400px" width="600px">
+                <Bar :data="datacollection" :options="options" />
+            </SectionCard>
+        </div>
     </AdminLayout>
 </template>
 
 <style scoped>
 .title {
-  color: #444a53;
-  font-size: 30px;
-  margin-left: 3rem;
-  font-weight: 700;
+    color: #444a53;
+    font-size: 30px;
+    margin-left: 3rem;
+    font-weight: 700;
+}
+
+.chart {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
 @media screen and (max-width: 768px) {
-  .title {
-    margin-left: 1rem;
-  }
+    .title {
+        margin-left: 1rem;
+    }
+
+    .chart {
+        display: block;
+    }
 }
 </style>

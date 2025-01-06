@@ -58,6 +58,12 @@ const logout = () => {
                                     Manage Account
                                 </div>
 
+                                <DropdownLink :href="route('history')">
+                                    Feedback History
+                                </DropdownLink>
+
+                                <div class="border-t border-gray-200" />
+
                                 <DropdownLink :href="route('profile.show')">
                                     Profile
                                 </DropdownLink>

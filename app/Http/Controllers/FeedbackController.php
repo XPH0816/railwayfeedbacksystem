@@ -94,9 +94,11 @@ class FeedbackController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Feedback $feedback)
+    public function show()
     {
-        //
+        return Inertia::render('History', [
+            'feedbacks' => auth()->user()->feedbacks->load('railway'),
+        ]);
     }
 
     /**

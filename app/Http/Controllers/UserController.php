@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use App\Models\Railway;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,8 +15,29 @@ class UserController extends Controller
      */
     public function index()
     {
+        $railways = Railway::all();
+        if ($railways->sortByDesc('rating')->first()->rating == null) {
+            $bestRailway = new Railway(['name' => 'No railways']);
+        } else {
+            $bestRailway = $railways->sortByDesc('rating')->first();
+        }
+
+        if ($railways->sortBy('rating')->first()->rating == null) {
+            $worstRailway = new Railway(['name' => 'No railways']);
+        } else {
+            $worstRailway = $railways->sortBy('rating')->first();
+        }
+
         return Inertia::render('Dashboard', [
-            'users' => User::all(),
+            'bestRailway' => $bestRailway,
+            'worstRailway' => $worstRailway,
+            'railways' => $railways->map(function ($railway) {
+                return [
+                    'id' => $railway->id,
+                    'name' => $railway->name,
+                    'rating' => $railway->rating,
+                ];
+            }),
         ]);
     }
 

@@ -72,7 +72,7 @@ defineProps({
     </div>
 </template>
 
-<style>
+<style scoped>
 .board {
     /* margin: 30px 0 30px 30px; */
     overflow: auto;

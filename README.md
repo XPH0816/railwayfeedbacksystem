@@ -49,3 +49,8 @@ and (remember open 2 terminal)
 ```bash
 php artisan queue:work
 ```
+
+### Note: 
+Admin login credential:
+- email: ```admin@example.com```
+- password: ```admin```
