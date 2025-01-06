@@ -1,11 +1,5 @@
 <script setup>
 import { Head, useForm } from '@inertiajs/vue3';
-import AuthenticationCard from '@/Components/AuthenticationCard.vue';
-import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
 
 const props = defineProps({
     email: String,
@@ -27,60 +21,104 @@ const submit = () => {
 </script>
 
 <template>
+
     <Head title="Reset Password" />
 
-    <AuthenticationCard>
-        <template #logo>
-            <AuthenticationCardLogo />
-        </template>
-
-        <form @submit.prevent="submit">
-            <div>
-                <InputLabel for="email" value="Email" />
-                <TextInput
-                    id="email"
-                    v-model="form.email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    required
-                    autofocus
-                    autocomplete="username"
-                />
-                <InputError class="mt-2" :message="form.errors.email" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    v-model="form.password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="new-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password" />
-            </div>
-
-            <div class="mt-4">
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-                <TextInput
-                    id="password_confirmation"
-                    v-model="form.password_confirmation"
-                    type="password"
-                    class="mt-1 block w-full"
-                    required
-                    autocomplete="new-password"
-                />
-                <InputError class="mt-2" :message="form.errors.password_confirmation" />
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <PrimaryButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+    <div class="reset-password-container">
+        <div class="reset-password-form">
+            <h1>Reset Password</h1>
+            <form @submit.prevent="submit">
+                <div class="input-group">
+                    <label for="email">Email</label>
+                    <input autocomplete="username" v-model="form.email" type="email" id="email"
+                        placeholder="Enter your email address" required autofocus />
+                </div>
+                <div class="input-group">
+                    <label for="newPassword">New Password</label>
+                    <input v-model="form.password" type="password" id="newPassword"
+                        placeholder="Enter your new password" required autocomplete="new-password" />
+                </div>
+                <div class="input-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input v-model="form.password_confirmation" type="password" id="confirmPassword"
+                        placeholder="Confirm your new password" required autocomplete="new-password" />
+                </div>
+                <button type="submit" :style="{ opacity: form.processing ? 0.25 : 1 }" :disabled="form.processing">
                     Reset Password
-                </PrimaryButton>
-            </div>
-        </form>
-    </AuthenticationCard>
+                </button>
+            </form>
+        </div>
+    </div>
 </template>
 
+<style scoped>
+.reset-password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.reset-password-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+    color: #333;
+    font-size: 26px;
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+    /* Ensures labels are aligned to the left */
+}
+
+.input-group label {
+    color: #333;
+    font-size: 14px;
+    display: block;
+    margin-bottom: 5px;
+    /* Adds spacing between label and input box */
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 0;
+    background-color: white;
+    /* Ensures the textbox is white */
+    color: #333;
+    /* Dark text for contrast */
+}
+
+input:focus {
+    outline: none;
+    border-color: #4CAF50;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+</style>

@@ -34,6 +34,8 @@ MAIL_MAILER=mailersend
 #MAIL_ENCRYPTION=tls
 MAIL_FROM_ADDRESS="anything@domain-from-mailersend"
 MAIL_FROM_NAME="${APP_NAME}"
+
+MAILERSEND_API_KEY="your-api-key"
 ```
 5. Run Migrations with seed 🌱
 ```bash
