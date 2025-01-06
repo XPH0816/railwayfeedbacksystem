@@ -3,10 +3,10 @@ import RatingStats from '@/Components/Admin/RatingStats.vue';
 import AdminLayout from '@/Layouts/AdminLayout.vue';
 
 import { Bar } from 'vue-chartjs';
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, Colors } from 'chart.js';
 import SectionCard from '@/Components/Home/SectionCard.vue';
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend, Colors);
 ChartJS.defaults.font.family = 'cursive';
 
 const props = defineProps({
@@ -25,14 +25,12 @@ const props = defineProps({
 });
 
 const datacollection = {
-    labels: props.railways.map((railway) => railway.name),
-    datasets: [
-        {
-            label: 'Rating',
-            backgroundColor: '#f87979',
-            data: props.railways.map((railway) => railway.rating ?? 0),
-        },
-    ],
+    labels: [""],
+    datasets: props.railways.map((railway) => ({
+        label: railway.name,
+        data: [railway.rating ?? 0],
+        backgroundColor: `hsl(${Math.random() * 360}, 70%, ${50 + Math.random() * 40}%)`
+    })),
 };
 
 const options = {
@@ -42,9 +40,10 @@ const options = {
         x: {
             title: {
                 display: true,
-                text: 'Railway',
+                text: 'Railway Lines',
                 font: {
-                    size: 14,
+                    size: 16,
+                    weight: 'bold',
                 },
             },
         },
