@@ -16,17 +16,10 @@ class UserController extends Controller
     public function index()
     {
         $railways = Railway::all();
-        if ($railways->sortByDesc('rating')->first()->rating == null) {
-            $bestRailway = new Railway(['name' => 'No railways']);
-        } else {
-            $bestRailway = $railways->sortByDesc('rating')->first();
-        }
+        $bestRailway = $railways->sortByDesc('rating')->first() ?? new Railway(['name' => 'No railways']);
 
-        if ($railways->sortBy('rating')->first()->rating == null) {
-            $worstRailway = new Railway(['name' => 'No railways']);
-        } else {
-            $worstRailway = $railways->sortBy('rating')->first();
-        }
+        $worstRailway =
+            $railways->filter(fn($railway) => $railway->rating !== null && $railway->rating > 0)->sortBy('rating')->first() ?? new Railway(['name' => 'No railways']);
 
         return Inertia::render('Dashboard', [
             'bestRailway' => $bestRailway,
@@ -38,6 +31,14 @@ class UserController extends Controller
                     'rating' => $railway->rating,
                 ];
             }),
+        ]);
+    }
+
+
+    public function users()
+    {
+        return Inertia::render('Users', [
+            'users' => User::all(),
         ]);
     }
 

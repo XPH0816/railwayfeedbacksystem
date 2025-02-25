@@ -12,7 +12,7 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', [UserController::class, 'index'])->name('dashboard');
-    Route::get('/users', [UserController::class, 'index'])->name('users');
+    Route::get('/users', [UserController::class, 'users'])->name('users');
     Route::post('/users', [RegisteredUserController::class, 'store'])->name('users.store');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.delete');
